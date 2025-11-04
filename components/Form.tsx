@@ -1,16 +1,17 @@
+'use client'
 
 
+import { useFormState, useFormStatus } from 'react-dom';
 import React from 'react'
-
-const createUser = async () => {
-    'use server'
-
-    console.log('creating user ..')
-}
-
+import { createUser as createUserAction } from '@/app/utils/actions';
 function Form() {
+
+
+
+
+
     return (
-        <form action={createUser} className={formStyle}>
+        <form action={createUserAction} className={formStyle}>
             <h2 className='text-2xl capitalize mb-4'>create a user</h2>
             <input className={inputStyle} type="text" name='firstName' defaultValue={'peter'} />
             <input className={inputStyle} type="text" name='lastName' defaultValue={'mansur'} />
