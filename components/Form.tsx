@@ -1,21 +1,24 @@
 'use client'
 
 
-import { useFormState, useFormStatus } from 'react-dom';
-import React from 'react'
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import React, { use } from 'react'
 import { createUser as createUserAction } from '@/app/utils/actions';
 function Form() {
 
+    const [message, formAction] = useActionState(createUserAction, null);
 
 
 
 
     return (
-        <form action={createUserAction} className={formStyle}>
+        <form action={formAction} className={formStyle}>
+            {message && <p>{message}</p>}
             <h2 className='text-2xl capitalize mb-4'>create a user</h2>
             <input className={inputStyle} type="text" name='firstName' defaultValue={'peter'} />
             <input className={inputStyle} type="text" name='lastName' defaultValue={'mansur'} />
-            <button className={btnStyle} type='submit' >submit</button>
+            <SubmitButton />
 
         </form>
     )
@@ -28,3 +31,11 @@ const btnStyle =
 
 
 export default Form
+
+
+const SubmitButton = () => {
+    const { pending } = useFormStatus();
+    return (
+        <button type='submit' className={btnStyle} disabled={pending}>{pending ? 'submitting...' : 'submit'}</button>
+    )
+}
