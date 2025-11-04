@@ -36,7 +36,6 @@ export const createUser = async (prevState: any, formData: FormData) => {
 }
 
 export const fetchUsers = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     const result = await readFile(filePath, 'utf-8');
     const users: User[] = result ? JSON.parse(result) : [];
     return users;
@@ -49,4 +48,16 @@ const saveUser = async (user: User) => {
     users = [...users, user];
 
     await writeFile(filePath, JSON.stringify(users));
+}
+
+export const deleteUser = async (formData: FormData) => {
+    const id = formData.get('id') as string;
+    let users = await fetchUsers();
+
+    users = users.filter((user) => user.id !== id);
+
+    await writeFile(filePath, JSON.stringify(users));
+
+    revalidatePath('/actions');
+
 }
